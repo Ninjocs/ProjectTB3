@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Recipy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
+    <link href="assets/stylesheets/output.css" rel="stylesheet" />
+    <link href="style.scss" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <img src="./assets/img/logo.png" class="logo">
+      <div class="auth-buttons">
+        <a href="./location.html" class="button-green">Set a location</a>
+        <a href="./recipy.html" class="button-green">Set a recipy</a>
+        <a href="./main.html" class="button-green">Home</a>
+      </div>
+    </header>
+
+    <div class="page-content">
+        <div class="vignettes-container">
+          <div class="vignette">
+            <img src="./assets/img/company.jpg" alt="Person 1">
+            <h3>John Doe</h3>
+            <div class="details">
+              <p>Temperature: 22°C</p>
+              <p>Humidity: 45%</p>
+            </div>
+          </div>
+          <div class="vignette">
+            <img src="./assets/img/company.jpg" alt="Person 2">
+            <h3>Jane Smith</h3>
+            <div class="details">
+              <p>Temperature: 22°C</p>
+              <p>Humidity: 45%</p>
+            </div>
+          </div>
+          <div class="vignette">
+            <img src="./assets/img/company.jpg" alt="Person 3">
+            <h3>Alex Brown</h3>
+            <div class="details">
+              <p>Temperature: 22°C</p>
+              <p>Humidity: 45%</p>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="page-content">
+      <div class="input-section">
+        <div class="input-group">
+          <label for="image" class="input-label">Image:</label>
+          <input id="image" class="user-input" type="image" placeholder="Put the recipy's image">
+        </div>
+        <div class="input-group">
+          <label for="name" class="input-label">Name:</label>
+          <input id="name" class="user-input" type="text" placeholder="Enter the recipy's name">
+        </div>
+        <div class="input-group">
+          <label for="temperature" class="input-label">Temperature:</label>
+          <input id="temperature" class="user-input" type="text" placeholder="Enter the recipy's temperature">
+        </div>
+        <div class="input-group">
+          <label for="humidity" class="input-label">Humidity:</label>
+          <input id="humidity" class="user-input" type="text" placeholder="Enter the recipy's humidity">
+        </div>
+        <button class="button-green">Post</button>
+        <button class="button-green">Clear Chat</button>
+      </div>
+    </div>
+  </body>
+</html>

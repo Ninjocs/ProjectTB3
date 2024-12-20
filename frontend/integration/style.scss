@@ -1,0 +1,212 @@
+:root {
+  --green: #72ac51;
+  --dark-green: #47752d;
+  --text-color: #000;
+  --input-border-color: #ccc;
+  --font-family: 'Open Sans', sans-serif;
+  --background-color: #ebebeb;
+  --table-border-color: #ddd;
+  --table-header-text: white;
+  --vignette-bg: white;
+  --vignette-shadow: rgba(0, 0, 0, 0.1);
+  --vignette-hover-shadow: rgba(0, 0, 0, 0.2);
+}
+
+a {
+  text-decoration: inherit;
+  color: var(--text-color);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: white;
+  color: var(--text-color);
+}
+
+.logo {
+  max-width: 200px;
+  width: 20%;
+  height: auto;
+}
+
+.button-green {
+  display: inline-block;
+  background-color: var(--green);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.button-green:hover {
+  background-color: var(--dark-green);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--vignette-bg);
+  color: var(--text-color);
+}
+
+th, td {
+  border: 1px solid var(--table-border-color);
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: var(--green);
+  color: var(--table-header-text);
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.page-content {
+  display: flex;
+  flex-wrap: wrap; /* Enable wrapping */
+  gap: 5px;
+  margin: 10px;
+  color: var(--text-color);
+}
+
+.left-section {
+  flex: 1 1 100%; /* Full width by default */
+  max-width: 25%; /* Restrict width on larger screens */
+}
+
+.right-section {
+  flex: 1 1 100%; /* Full width by default */
+  max-width: 70%; /* Restrict width on larger screens */
+}
+
+@media (min-width: 700px) {
+  .page-content {
+    flex-wrap: nowrap; /* Prevent wrapping when there's enough space */
+  }
+
+  .left-section {
+    flex: 1 1 15%; /* Fixed width on larger screens */
+  }
+
+  .right-section {
+    flex: 1 1 70%; /* Fixed width on larger screens */
+  }
+}
+
+@media (max-width: 700px) {
+  .page-content {
+    flex-wrap: wrap; /* Ensure wrapping on smaller screens */
+  }
+
+  .left-section,
+  .right-section {
+    flex: 1 1 100%; /* Full width when wrapped */
+    max-width: 100%; /* Ensure full width when wrapped */
+  }
+}
+
+.vignettes-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.vignette {
+  flex: 1 1 calc(30% - 5px); /* 3 per row with spacing */
+  background-color: var(--vignette-bg);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--vignette-shadow);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: var(--text-color);
+  height: auto; /* Allow dynamic height based on content */
+}
+
+.vignette:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px var(--vignette-hover-shadow);
+}
+
+.vignette img {
+  width: auto; /* Allow width to adjust dynamically */
+  max-width: 90%; /* Prevent the image from being too wide */
+  height: auto; /* Allow height to adjust dynamically */
+  max-height: 150px; /* Maintain fixed height for images */
+  object-fit: cover; /* Crop images if necessary */
+  border-radius: 8px;
+}
+
+.vignette h3 {
+  margin: 5px 0; /* Adjust spacing above and below the title */
+  font-size: 18px;
+}
+
+.vignette .details {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 0px;
+}
+
+.vignette .details p {
+  font-size: 14px;
+  margin: 0px;
+}
+
+.input-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--text-color);
+}
+
+.input-label {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.user-input {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 4px;
+  width: 200px;
+}
+
+.clear-chat-btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: var(--green);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.clear-chat-btn:hover {
+  background-color: var(--dark-green);
+}

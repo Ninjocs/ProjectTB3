@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Location</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
+    <link href="assets/stylesheets/output.css" rel="stylesheet" />
+    <link href="style.scss" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <img src="./assets/img/logo.png" class="logo">
+      <div class="auth-buttons">
+        <a href="./location.html" class="button-green">Set a location</a>
+        <a href="./recipy.html" class="button-green">Set a recipy</a>
+        <a href="./main.html" class="button-green">Home</a>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Temperature</th>
+            <th>Humidity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fridge</td>
+            <td>5°C</td>
+            <td>42.3%</td>
+          </tr>
+          <tr>
+            <td>Shelf</td>
+            <td>18°C</td>
+            <td>31.4%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="page-content">
+      <div class="input-section">
+        <div class="input-group">
+          <label for="name" class="input-label">Name:</label>
+          <input id="name" class="user-input" type="text" placeholder="Enter the location's name">
+        </div>
+        <div class="input-group">
+          <label for="temperature" class="input-label">Temperature:</label>
+          <input id="temperature" class="user-input" type="text" placeholder="Enter the location's temperature">
+        </div>
+        <div class="input-group">
+          <label for="humidity" class="input-label">Humidity:</label>
+          <input id="humidity" class="user-input" type="text" placeholder="Enter the location's humidity">
+        </div>
+        <button class="button-green">Post</button>
+        <button class="button-green">Clear Chat</button>
+      </div>
+    </div>
+  </body>
+</html>
