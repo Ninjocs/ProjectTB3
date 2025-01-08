@@ -1,66 +1,358 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Location</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
-    <link href="assets/stylesheets/output.css" rel="stylesheet" />
-    <link href="style.scss" rel="stylesheet" />
-  </head>
-  <body>
-    <header>
-      <img src="./assets/img/logo.png" class="logo">
-      <div class="auth-buttons">
-        <a href="./location.html" class="button-green">Set a location</a>
-        <a href="./recipy.html" class="button-green">Set a recipy</a>
-        <a href="./main.html" class="button-green">Home</a>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8">
+  <title>Location</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <link href="assets/stylesheets/output.css" rel="stylesheet" />
+  <link href="style.scss" rel="stylesheet" />
+  <style>
+    .page-content {
+      padding: 20px;
+    }
 
-    <div class="page-content">
-      <table>
-        <thead>
-          <tr>
-            <th>Location</th>
-            <th>Temperature</th>
-            <th>Humidity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Fridge</td>
-            <td>5°C</td>
-            <td>42.3%</td>
-          </tr>
-          <tr>
-            <td>Shelf</td>
-            <td>18°C</td>
-            <td>31.4%</td>
-          </tr>
-        </tbody>
-      </table>
+    .location-card {
+      background-color: #ffffff;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .location-card h3 {
+      font-size: 1.6em;
+      font-weight: 600;
+      margin: 0;
+      color: #333;
+    }
+
+    .location-card p {
+      font-size: 1.1em;
+      color: #555;
+      margin: 10px 0;
+    }
+
+    .location-card .location-details {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .location-card .location-details p {
+      font-size: 1em;
+      color: #777;
+    }
+
+    .location-card .location-details p strong {
+      font-weight: bold;
+    }
+
+    .location-card:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+    }
+
+    .loading-text,
+    .error-text {
+      text-align: center;
+      font-size: 1.2em;
+      color: #888;
+    }
+
+    .location-card-container {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      margin-top: 20px;
+    }
+
+    .button-red {
+      background-color: #f44336;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .button-red:hover {
+      background-color: #e53935;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .popup input {
+      padding: 8px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    .popup button {
+      padding: 10px 15px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .popup button:hover {
+      background-color: #45a049;
+    }
+
+    .popup .close-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .popup .close-btn:hover {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <img src="./assets/img/logo.png" class="logo">
+  <div class="auth-buttons">
+    <a href="./location.html" class="button-green">Set a location</a>
+    <a href="./recipy.html" class="button-green">Set a recipy</a>
+    <a href="./main.html" class="button-green">Home</a>
+  </div>
+</header>
+
+<div id="app">
+  <div class="page-content">
+    <h1>Location List</h1>
+
+    <!-- Show loading text or error -->
+    <div v-if="isLoading" class="loading-text">
+      Loading places...
+    </div>
+    <div v-if="error" class="error-text">
+      Error: {{ error }}
     </div>
 
-    <div class="page-content">
-      <div class="input-section">
-        <div class="input-group">
-          <label for="name" class="input-label">Name:</label>
-          <input id="name" class="user-input" type="text" placeholder="Enter the location's name">
+    <!-- Display places as cards -->
+    <div v-if="places.length" class="location-card-container">
+      <div v-for="place in places" :key="place.id" class="location-card">
+        <h3>{{ place.name }}</h3>
+        <div class="location-details">
+          <p><strong>Temperature:</strong> {{ place.currentTemperature ?? 'N/A' }}°C</p>
+          <p><strong>Humidity:</strong> {{ place.currentHumidity ?? 'N/A' }}%</p>
         </div>
-        <div class="input-group">
-          <label for="temperature" class="input-label">Temperature:</label>
-          <input id="temperature" class="user-input" type="text" placeholder="Enter the location's temperature">
-        </div>
-        <div class="input-group">
-          <label for="humidity" class="input-label">Humidity:</label>
-          <input id="humidity" class="user-input" type="text" placeholder="Enter the location's humidity">
-        </div>
-        <button class="button-green">Post</button>
-        <button class="button-green">Clear Chat</button>
+        <button @click="deletePlace(place.id)" class="button-red">Delete</button>
+        <button @click="openAddMealPopup(place.id)" class="button-green">Add Meal</button>
       </div>
     </div>
-  </body>
+
+    <!-- Show message if no places available -->
+    <div v-if="!isLoading && !places.length && !error" class="loading-text">
+      No places available.
+    </div>
+
+    <!-- Input section for adding new places -->
+    <div class="input-section">
+      <div class="input-group">
+        <label for="name" class="input-label">Name:</label>
+        <input id="name" v-model="newPlace.name" class="user-input" type="text" placeholder="Enter the location's name">
+      </div>
+      <div class="input-group">
+        <label for="temperature" class="input-label">Temperature:</label>
+        <input id="temperature" v-model="newPlace.currentTemperature" class="user-input" type="text" placeholder="Enter the location's temperature">
+      </div>
+      <div class="input-group">
+        <label for="humidity" class="input-label">Humidity:</label>
+        <input id="humidity" v-model="newPlace.currentHumidity" class="user-input" type="text" placeholder="Enter the location's humidity">
+      </div>
+      <button @click="addPlace" class="button-green">Post</button>
+    </div>
+  </div>
+
+  <!-- Popup for adding a meal -->
+  <div v-if="isMealPopupOpen" class="popup">
+    <div class="popup-content">
+      <h3>Add Meal to {{ selectedPlace.name }}</h3>
+      <input v-model="newMealName" placeholder="Enter meal name" type="text">
+      <button @click="addMeal" class="button-green">Add Meal</button>
+      <button @click="closeMealPopup" class="close-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        places: [],
+        isLoading: true,
+        error: null,
+        newPlace: {
+          name: '',
+          currentTemperature: '',
+          currentHumidity: ''
+        },
+        isMealPopupOpen: false,
+        selectedPlace: null,
+        newMealName: ''
+      };
+    },
+    mounted() {
+      this.fetchPlaces();
+    },
+    methods: {
+      fetchPlaces() {
+        const apiUrl = 'http://wasteshield.cleverapps.io/api/places';  // API endpoint
+        fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  this.places = data;
+                  this.isLoading = false;
+                })
+                .catch(error => {
+                  this.error = error.message;
+                  this.isLoading = false;
+                });
+      },
+      addPlace() {
+        if (!this.newPlace.name || !this.newPlace.currentTemperature || !this.newPlace.currentHumidity) {
+          alert("All fields are required");
+          return;
+        }
+
+        const newPlace = {
+          name: this.newPlace.name,
+          currentTemperature: this.newPlace.currentTemperature,
+          currentHumidity: this.newPlace.currentHumidity
+        };
+
+        // POST request to the API to add a new place
+        fetch('http://wasteshield.cleverapps.io/api/places', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newPlace)
+        })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Failed to add place');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  // Add the newly created place to the list
+                  this.places.push(data);
+                  this.newPlace = { name: '', currentTemperature: '', currentHumidity: '' };
+                })
+                .catch(error => {
+                  this.error = error.message;
+                  alert("Failed to add place. Please try again.");
+                });
+      },
+      deletePlace(id) {
+        // DELETE request to the API to remove a place
+        fetch(`http://wasteshield.cleverapps.io/api/places/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Failed to delete place');
+                  }
+                  // Remove the place from the list after successful deletion
+                  this.places = this.places.filter(place => place.id !== id);
+                })
+                .catch(error => {
+                  this.error = error.message;
+                  alert("Failed to delete place. Please try again.");
+                });
+      },
+      openAddMealPopup(placeId) {
+        this.selectedPlace = this.places.find(place => place.id === placeId);
+        this.isMealPopupOpen = true;
+      },
+      closeMealPopup() {
+        this.isMealPopupOpen = false;
+        this.newMealName = '';
+      },
+      addMeal() {
+        if (!this.newMealName) {
+          alert("Meal name is required");
+          return;
+        }
+
+        const newMeal = {
+          name: this.newMealName,
+        };
+
+        // POST request to the API to add a meal to a place
+        fetch(`http://wasteshield.cleverapps.io/api/places/${this.selectedPlace.id}/meals`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newMeal)
+        })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Failed to add meal');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  // Add the meal to the selected place's meals array
+                  this.selectedPlace.meals.push(data);
+                  this.closeMealPopup();
+                })
+                .catch(error => {
+                  this.error = error.message;
+                  alert("Failed to add meal. Please try again.");
+                });
+      }
+    }
+  });
+</script>
+</body>
 </html>
