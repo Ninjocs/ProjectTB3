@@ -1,80 +1,182 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Waste-Shield</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
-    <link href="assets/stylesheets/output.css" rel="stylesheet" />
-    <link href="style.scss" rel="stylesheet" />
-  </head>
-  <body>
-    <header>
-      <img src="./assets/img/logo.png" class="logo">
-      <div class="auth-buttons">
-        <a href="./location.html" class="button-green">Set a location</a>
-        <a href="./recipy.html" class="button-green">Set a recipy</a>
-        <a href="./main.html" class="button-green">Home</a>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8">
+  <title>Waste-Shield</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet" />
+  <link href="assets/stylesheets/output.css" rel="stylesheet" />
+  <link href="style.scss" rel="stylesheet" />
+  <style>
+    /* Custom Styles */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <div class="page-content">
-      <!-- Left Section -->
-      <div class="left-section">
-        <table>
-          <thead>
-            <tr>
-              <th>Location</th>
-              <th>Temperature</th>
-              <th>Humidity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Fridge</td>
-              <td>5°C</td>
-              <td>42.3%</td>
-            </tr>
-            <tr>
-              <td>Shelf</td>
-              <td>18°C</td>
-              <td>31.4%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #4caf50;
+      padding: 0 50px;
+      height: 200px;
+    }
 
-      <!-- Right Section -->
-      <div class="right-section">
-        <div class="vignettes-container">
-          <div class="vignette">
-            <img src="./assets/img/company.jpg" alt="Person 1">
-            <h3>John Doe</h3>
-            <div class="details">
-              <p>Temperature: 22°C</p>
-              <p>Humidity: 45%</p>
-            </div>
-          </div>
-          <div class="vignette">
-            <img src="./assets/img/company.jpg" alt="Person 2">
-            <h3>Jane Smith</h3>
-            <div class="details">
-              <p>Temperature: 22°C</p>
-              <p>Humidity: 45%</p>
-            </div>
-          </div>
-          <div class="vignette">
-            <img src="./assets/img/company.jpg" alt="Person 3">
-            <h3>Alex Brown</h3>
-            <div class="details">
-              <p>Temperature: 22°C</p>
-              <p>Humidity: 45%</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+    header .logo {
+      max-height: 100%;
+      width: auto;
+    }
+
+    header .auth-buttons a {
+      color: white;
+      padding: 11.5px 20px;
+      text-decoration: none;
+      background-color: #333;
+      margin-left: 10px;
+      border-radius: 5px;
+    }
+
+    header .auth-buttons a:hover {
+      background-color: #555;
+    }
+
+    .page-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    /* Introduction Section */
+    .intro-section {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .intro-section h2 {
+      font-size: 1.8em;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .intro-section p {
+      font-size: 1.1em;
+      color: #555;
+      margin-top: 10px;
+    }
+
+    .form-section {
+      width: 30%;
+      padding: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .room-section {
+      width: 65%;
+      padding: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-left: 20px;
+    }
+
+    .location-card {
+      background-color: #ffffff;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .location-card h3 {
+      font-size: 1.6em;
+      font-weight: 600;
+      margin: 0;
+      color: #333;
+    }
+
+    .location-card p {
+      font-size: 1.1em;
+      color: #555;
+      margin: 10px 0;
+    }
+
+    .location-card .location-details {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .location-card .location-details p {
+      font-size: 1em;
+      color: #777;
+    }
+
+    .location-card .location-details p strong {
+      font-weight: bold;
+    }
+
+    .location-card:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+    }
+
+    .loading-text,
+    .error-text {
+      text-align: center;
+      font-size: 1.2em;
+      color: #888;
+    }
+
+    .location-card-container {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      margin-top: 20px;
+    }
+
+    .button-red {
+      background-color: #f44336;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .button-red:hover {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <img src="./assets/img/logo.png" class="logo">
+  <div class="auth-buttons">
+    <a href="./location.html" class="button-green">Set a location</a>
+    <a href="./recipy.html" class="button-green">Set a recipy</a>
+    <a href="./main.html" class="button-green">Home</a>
+  </div>
+</header>
+
+<div class="page-content">
+  <!-- Introduction Section -->
+  <div class="intro-section">
+    <h2>Welcome to WasteShield!</h2>
+    <p>WasteShield is an innovative app designed to help you store meals efficiently and track how long they last. By simply adding your meals to different locations (e.g., fridge, shelf), you'll get notified about the remaining days until they go bad.</p>
+    <p>Start by setting your locations and meal storage settings to reduce food waste and keep your meals fresh longer!</p>
+  </div>
+
+</body>
 </html>

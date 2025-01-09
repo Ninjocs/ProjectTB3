@@ -10,7 +10,40 @@
   <link href="assets/stylesheets/output.css" rel="stylesheet" />
   <link href="style.scss" rel="stylesheet" />
   <style>
-    /* Custom Styles */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #4caf50;
+      padding: 0 50px;
+      height: 200px;
+    }
+
+    header .logo {
+      max-height: 100%;
+      width: auto;
+    }
+
+    header .auth-buttons a {
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      background-color: #333;
+      margin-left: 10px;
+      border-radius: 5px;
+    }
+
+    header .auth-buttons a:hover {
+      background-color: #555;
+    }
+
     .page-content {
       display: flex;
       justify-content: space-between;
@@ -197,10 +230,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 10px;
     }
 
     .meal-input {
-      width: 60%;
+      width: 75%;
       padding: 8px;
       border-radius: 4px;
       border: 1px solid #ddd;
@@ -218,6 +252,12 @@
     .meal-button:hover {
       background-color: #45a049;
     }
+
+    .location-card .location-details .humidity {
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
   </style>
 </head>
 <body>
@@ -270,7 +310,7 @@
           <h3>{{ place.name }}</h3>
           <div class="location-details">
             <p><strong>Temperature:</strong> {{ place.currentTemperature ?? 'N/A' }}°C</p>
-            <p><strong>Humidity:</strong> {{ place.currentHumidity ?? 'N/A' }}%</p>
+            <p class="humidity"><strong>Humidity:</strong> {{ place.currentHumidity ?? 'N/A' }}%</p>
           </div>
 
           <!-- Delete button -->
@@ -281,7 +321,6 @@
             <input v-model="place.newMealName" class="meal-input" placeholder="Enter meal name">
             <button @click="addMeal(place.id)" class="meal-button">Add Meal</button>
           </div>
-
 
           <!-- Meals List -->
           <div v-if="place.windows && place.windows.length" class="meal-list">
@@ -324,7 +363,7 @@
     },
     methods: {
       fetchPlaces() {
-        const apiUrl = 'http://wasteshield.cleverapps.io/api/places';  // API endpoint
+        const apiUrl = 'http://wasteshield.cleverapps.io/api/places';
         fetch(apiUrl, {
           method: 'GET',
           headers: {
@@ -356,10 +395,9 @@
           name: this.newPlaceName,
           currentTemperature: this.newPlaceTemperature,
           currentHumidity: this.newPlaceHumidity,
-          windows: []  // Ensure windows is initialized as an empty array
+          windows: []
         };
 
-        // POST request to the API to add a new place
         fetch('http://wasteshield.cleverapps.io/api/places', {
           method: 'POST',
           headers: {
@@ -374,8 +412,7 @@
                   return response.json();
                 })
                 .then(data => {
-                  // If the backend does not return the windows field, initialize it here
-                  data.windows = data.windows || [];  // Ensure windows is not null but an empty array
+                  data.windows = data.windows || [];
                   this.places.push(data);
                   // Clear the input fields
                   this.newPlaceName = '';
@@ -387,43 +424,38 @@
                   alert("Failed to add place. Please try again.");
                 });
       },
+
       deletePlace(id) {
-        // DELETE request to the API to remove a place
-        fetch(`http://wasteshield.cleverapps.io/api/places/${id}`, {
+        const apiUrl = `http://wasteshield.cleverapps.io/api/places/${id}`;
+        fetch(apiUrl, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-          },
+          }
         })
                 .then(response => {
                   if (response.ok) {
                     this.places = this.places.filter(place => place.id !== id);
                   } else {
-                    throw new Error('Failed to delete place');
+                    alert("Failed to delete place");
                   }
-                })
-                .catch(error => {
-                  this.error = error.message;
-                  alert("Failed to delete place. Please try again.");
                 });
       },
+
       addMeal(placeId) {
         const place = this.places.find(p => p.id === placeId);
 
-        // Check if the meal name is provided
         if (!place.newMealName) {
           alert("Please enter a meal name");
           return;
         }
 
-        // Prepare the API URL with the meal name as a query parameter
         const apiUrl = `http://wasteshield.cleverapps.io/api/places/${placeId}/windows?name=${encodeURIComponent(place.newMealName)}`;
 
-        // Make the POST request to add the meal
         fetch(apiUrl, {
-          method: 'POST', // Use POST method to add the meal
+          method: 'POST',
           headers: {
-            'Accept': '*/*', // Accept header as indicated in the curl
+            'Accept': '*/*',
           },
         })
                 .then(response => {
@@ -433,11 +465,9 @@
                   return response.json();
                 })
                 .then(data => {
-                  // Handle the response if necessary (like updating the list)
                   if (data) {
-                    // Add the meal to the place's windows list (assuming the response has the necessary data)
                     place.windows.push(data);
-                    place.newMealName = ''; // Clear the input after adding the meal
+                    place.newMealName = '';
                   }
                 })
                 .catch(error => {
@@ -445,27 +475,30 @@
                   alert("Failed to add meal. Please try again.");
                 });
       },
+
       deleteMeal(placeId, mealId) {
-        // DELETE request to the API to remove a meal from a place
-        fetch(`http://wasteshield.cleverapps.io/api/places/${placeId}/windows/${mealId}`, {
+        const apiUrl = `http://wasteshield.cleverapps.io/api/places/${placeId}/windows/${mealId}`;
+
+        fetch(apiUrl, {
           method: 'DELETE',
           headers: {
-            'Content-Type': 'application/json',
-          },
+            'Accept': '*/*',
+          }
         })
                 .then(response => {
                   if (response.ok) {
                     const place = this.places.find(p => p.id === placeId);
-                    place.windows = place.windows.filter(meal => meal.id !== mealId);
+                    if (place) {
+                      place.windows = place.windows.filter(meal => meal.id !== mealId); 
+                    }
                   } else {
-                    throw new Error('Failed to delete meal');
+                    alert("Failed to delete meal");
                   }
                 })
                 .catch(error => {
-                  this.error = error.message;
-                  alert("Failed to delete meal. Please try again.");
+                  alert("Error deleting meal: " + error.message);
                 });
-      }
+      },
     }
   });
 </script>
