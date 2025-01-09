@@ -489,7 +489,7 @@
                   if (response.ok) {
                     const place = this.places.find(p => p.id === placeId);
                     if (place) {
-                      place.windows = place.windows.filter(meal => meal.id !== mealId); 
+                      place.windows = place.windows.filter(meal => meal.id !== mealId);
                     }
                   } else {
                     alert("Failed to delete meal");
