@@ -10,8 +10,28 @@
   <link href="assets/stylesheets/output.css" rel="stylesheet" />
   <link href="style.scss" rel="stylesheet" />
   <style>
+    /* Custom Styles */
     .page-content {
+      display: flex;
+      justify-content: space-between;
       padding: 20px;
+    }
+
+    .form-section {
+      width: 30%;
+      padding: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .room-section {
+      width: 65%;
+      padding: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-left: 20px;
     }
 
     .location-card {
@@ -137,6 +157,67 @@
     .popup .close-btn:hover {
       background-color: #e53935;
     }
+
+    /* New Styles */
+    .input-section {
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .user-input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    .input-group button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .input-group button:hover {
+      background-color: #45a049;
+    }
+
+    .add-meal-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .meal-input {
+      width: 60%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    .meal-button {
+      padding: 8px 16px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .meal-button:hover {
+      background-color: #45a049;
+    }
   </style>
 </head>
 <body>
@@ -151,59 +232,73 @@
 
 <div id="app">
   <div class="page-content">
-    <h1>Location List</h1>
-
-    <!-- Show loading text or error -->
-    <div v-if="isLoading" class="loading-text">
-      Loading places...
-    </div>
-    <div v-if="error" class="error-text">
-      Error: {{ error }}
-    </div>
-
-    <!-- Display places as cards -->
-    <div v-if="places.length" class="location-card-container">
-      <div v-for="place in places" :key="place.id" class="location-card">
-        <h3>{{ place.name }}</h3>
-        <div class="location-details">
-          <p><strong>Temperature:</strong> {{ place.currentTemperature ?? 'N/A' }}°C</p>
-          <p><strong>Humidity:</strong> {{ place.currentHumidity ?? 'N/A' }}%</p>
+    <!-- Form to Post Place -->
+    <div class="form-section">
+      <h2>Post a New Place</h2>
+      <div class="input-section">
+        <div class="input-group">
+          <label for="name" class="input-label">Name:</label>
+          <input id="name" v-model="newPlaceName" class="user-input" type="text" placeholder="Enter the location's name">
         </div>
-        <button @click="deletePlace(place.id)" class="button-red">Delete</button>
-        <button @click="openAddMealPopup(place.id)" class="button-green">Add Meal</button>
+        <div class="input-group">
+          <label for="temperature" class="input-label">Temperature:</label>
+          <input id="temperature" v-model="newPlaceTemperature" class="user-input" type="text" placeholder="Enter the location's temperature">
+        </div>
+        <div class="input-group">
+          <label for="humidity" class="input-label">Humidity:</label>
+          <input id="humidity" v-model="newPlaceHumidity" class="user-input" type="text" placeholder="Enter the location's humidity">
+        </div>
+        <button @click="addPlace" class="input-group button-green">Post</button>
       </div>
     </div>
 
-    <!-- Show message if no places available -->
-    <div v-if="!isLoading && !places.length && !error" class="loading-text">
-      No places available.
-    </div>
+    <!-- Room Section -->
+    <div class="room-section">
+      <h1>Location List</h1>
 
-    <!-- Input section for adding new places -->
-    <div class="input-section">
-      <div class="input-group">
-        <label for="name" class="input-label">Name:</label>
-        <input id="name" v-model="newPlace.name" class="user-input" type="text" placeholder="Enter the location's name">
+      <!-- Show loading text or error -->
+      <div v-if="isLoading" class="loading-text">
+        Loading places...
       </div>
-      <div class="input-group">
-        <label for="temperature" class="input-label">Temperature:</label>
-        <input id="temperature" v-model="newPlace.currentTemperature" class="user-input" type="text" placeholder="Enter the location's temperature">
+      <div v-if="error" class="error-text">
+        Error: {{ error }}
       </div>
-      <div class="input-group">
-        <label for="humidity" class="input-label">Humidity:</label>
-        <input id="humidity" v-model="newPlace.currentHumidity" class="user-input" type="text" placeholder="Enter the location's humidity">
-      </div>
-      <button @click="addPlace" class="button-green">Post</button>
-    </div>
-  </div>
 
-  <!-- Popup for adding a meal -->
-  <div v-if="isMealPopupOpen" class="popup">
-    <div class="popup-content">
-      <h3>Add Meal to {{ selectedPlace.name }}</h3>
-      <input v-model="newMealName" placeholder="Enter meal name" type="text">
-      <button @click="addMeal" class="button-green">Add Meal</button>
-      <button @click="closeMealPopup" class="close-btn">Close</button>
+      <!-- Display places as cards -->
+      <div v-if="places.length" class="location-card-container">
+        <div v-for="place in places" :key="place.id" class="location-card">
+          <h3>{{ place.name }}</h3>
+          <div class="location-details">
+            <p><strong>Temperature:</strong> {{ place.currentTemperature ?? 'N/A' }}°C</p>
+            <p><strong>Humidity:</strong> {{ place.currentHumidity ?? 'N/A' }}%</p>
+          </div>
+
+          <!-- Delete button -->
+          <button @click="deletePlace(place.id)" class="button-red">Delete</button>
+
+          <!-- Add Meal section -->
+          <div class="add-meal-section">
+            <input v-model="place.newMealName" class="meal-input" placeholder="Enter meal name">
+            <button @click="addMeal(place.id)" class="meal-button">Add Meal</button>
+          </div>
+
+
+          <!-- Meals List -->
+          <div v-if="place.windows && place.windows.length" class="meal-list">
+            <h4>Meals:</h4>
+            <ul>
+              <li v-for="meal in place.windows" :key="meal.id">{{ meal.name }}
+                <button @click="deleteMeal(place.id, meal.id)" class="button-red">Delete</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Show message if no places available -->
+      <div v-if="!isLoading && !places.length && !error" class="loading-text">
+        No places available.
+      </div>
     </div>
   </div>
 </div>
@@ -221,11 +316,9 @@
           currentTemperature: '',
           currentHumidity: ''
         },
-        isMealPopupOpen: false,
-        selectedPlace: null,
-        newMealName: ''
       };
     },
+
     mounted() {
       this.fetchPlaces();
     },
@@ -254,15 +347,16 @@
                 });
       },
       addPlace() {
-        if (!this.newPlace.name || !this.newPlace.currentTemperature || !this.newPlace.currentHumidity) {
+        if (!this.newPlaceName || !this.newPlaceTemperature || !this.newPlaceHumidity) {
           alert("All fields are required");
           return;
         }
 
         const newPlace = {
-          name: this.newPlace.name,
-          currentTemperature: this.newPlace.currentTemperature,
-          currentHumidity: this.newPlace.currentHumidity
+          name: this.newPlaceName,
+          currentTemperature: this.newPlaceTemperature,
+          currentHumidity: this.newPlaceHumidity,
+          windows: []  // Ensure windows is initialized as an empty array
         };
 
         // POST request to the API to add a new place
@@ -280,9 +374,13 @@
                   return response.json();
                 })
                 .then(data => {
-                  // Add the newly created place to the list
+                  // If the backend does not return the windows field, initialize it here
+                  data.windows = data.windows || [];  // Ensure windows is not null but an empty array
                   this.places.push(data);
-                  this.newPlace = { name: '', currentTemperature: '', currentHumidity: '' };
+                  // Clear the input fields
+                  this.newPlaceName = '';
+                  this.newPlaceTemperature = '';
+                  this.newPlaceHumidity = '';
                 })
                 .catch(error => {
                   this.error = error.message;
@@ -295,45 +393,38 @@
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-          }
+          },
         })
                 .then(response => {
-                  if (!response.ok) {
+                  if (response.ok) {
+                    this.places = this.places.filter(place => place.id !== id);
+                  } else {
                     throw new Error('Failed to delete place');
                   }
-                  // Remove the place from the list after successful deletion
-                  this.places = this.places.filter(place => place.id !== id);
                 })
                 .catch(error => {
                   this.error = error.message;
                   alert("Failed to delete place. Please try again.");
                 });
       },
-      openAddMealPopup(placeId) {
-        this.selectedPlace = this.places.find(place => place.id === placeId);
-        this.isMealPopupOpen = true;
-      },
-      closeMealPopup() {
-        this.isMealPopupOpen = false;
-        this.newMealName = '';
-      },
-      addMeal() {
-        if (!this.newMealName) {
-          alert("Meal name is required");
+      addMeal(placeId) {
+        const place = this.places.find(p => p.id === placeId);
+
+        // Check if the meal name is provided
+        if (!place.newMealName) {
+          alert("Please enter a meal name");
           return;
         }
 
-        const newMeal = {
-          name: this.newMealName,
-        };
+        // Prepare the API URL with the meal name as a query parameter
+        const apiUrl = `http://wasteshield.cleverapps.io/api/places/${placeId}/windows?name=${encodeURIComponent(place.newMealName)}`;
 
-        // POST request to the API to add a meal to a place
-        fetch(`http://wasteshield.cleverapps.io/api/places/${this.selectedPlace.id}/meals`, {
-          method: 'POST',
+        // Make the POST request to add the meal
+        fetch(apiUrl, {
+          method: 'POST', // Use POST method to add the meal
           headers: {
-            'Content-Type': 'application/json',
+            'Accept': '*/*', // Accept header as indicated in the curl
           },
-          body: JSON.stringify(newMeal)
         })
                 .then(response => {
                   if (!response.ok) {
@@ -342,13 +433,37 @@
                   return response.json();
                 })
                 .then(data => {
-                  // Add the meal to the selected place's meals array
-                  this.selectedPlace.meals.push(data);
-                  this.closeMealPopup();
+                  // Handle the response if necessary (like updating the list)
+                  if (data) {
+                    // Add the meal to the place's windows list (assuming the response has the necessary data)
+                    place.windows.push(data);
+                    place.newMealName = ''; // Clear the input after adding the meal
+                  }
                 })
                 .catch(error => {
                   this.error = error.message;
                   alert("Failed to add meal. Please try again.");
+                });
+      },
+      deleteMeal(placeId, mealId) {
+        // DELETE request to the API to remove a meal from a place
+        fetch(`http://wasteshield.cleverapps.io/api/places/${placeId}/windows/${mealId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+                .then(response => {
+                  if (response.ok) {
+                    const place = this.places.find(p => p.id === placeId);
+                    place.windows = place.windows.filter(meal => meal.id !== mealId);
+                  } else {
+                    throw new Error('Failed to delete meal');
+                  }
+                })
+                .catch(error => {
+                  this.error = error.message;
+                  alert("Failed to delete meal. Please try again.");
                 });
       }
     }
