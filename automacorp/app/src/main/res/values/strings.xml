@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">automacorp</string>
+
+    <string name="app_logo_description">automacorp logo</string>
+    <string name="act_main_welcome">Welcome to the WasteShield App, the app to see the places you have created</string>
+    <string name="act_main_open">Open</string>
+    <string name="act_main_fill_name">Fill a name</string>
+    <string name="title_activity_place">PlaceActivity</string>
+    <string name="act_place_name">Place name</string>
+    <string name="act_place_save">This place has been saved</string>
+    <string name="act_place_none">No place found for this id or name</string>
+    <string name="act_place_current_temperature">Current temperature</string>
+    <string name="act_place_current_humidity">Current Humidity</string>
+    <string name="app_go_back_description">Go back</string>
+    <string name="app_go_place_description">Places</string>
+    <string name="app_go_github_description">Github</string>
+    <string name="app_go_mail_description">Send email</string>
+    <string name="target_temperature">Target Temperature</string>
+    <string name="current_temperature">Current Temperature</string>
+    <string name="create_place_title">Create Place</string>
+    <string name="create_place_message">Do you want to save the changes?</string>
+    <string name="create_button">Create</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="room_created_success">Room created successfully</string>
+
+</resources>
