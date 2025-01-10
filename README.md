@@ -1,6 +1,8 @@
 # ProjectTB3
 This is the GitHub repository of a project that has the goal to give good places to store food. 
 
+# Dev Guide
+This serves as a Dev Guide. 
 # Frontend
 As the name suggests, this file is where the website is stored. You can check the code that was modified in the files main.html, recipy.html and location.html. We wrote all the frontend code in these files. The individual sections are separated and all the VueJs is done in the location.html file. Normally, the method names are quite explicit. It is important that the acces is made in the localhost:8000, as that is a specific URL specified to the CORS that lets a website access the API. 
 
